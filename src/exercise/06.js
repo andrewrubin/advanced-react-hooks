@@ -3,10 +3,13 @@
 
 import * as React from 'react'
 
+// useDebugValue can take a "format" function which basically takes its first param and passes it through some logic to return a new value. This is only needed if the value is computationally-expensive. It will no longer calculate on every render. I think this is similar to a lazy initializer, but for DevTools :)
+const formatDebugValue = ({query, state}) => `query: ${query}!!, state: ${state}!!!`;
+
 function useMedia(query, initialState = false) {
   const [state, setState] = React.useState(initialState)
-  // 🐨 call React.useDebugValue here.
-  // 💰 here's the formatted label I use: `\`${query}\` => ${state}`
+  // React.useDebugValue(`'${query}': ${state}`)
+  React.useDebugValue({query, state}, formatDebugValue);
 
   React.useEffect(() => {
     let mounted = true
